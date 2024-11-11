@@ -77,7 +77,7 @@ classDiagram
     User "1" --* "many" Post : creates
     Post "many" -- "1" User : belongs to
     Post "many" --* "many" Tag : categorized by
-  
+``` 
 
 ## Getting Started
 
