@@ -79,10 +79,6 @@ classDiagram
     Post "many" --* "many" Tag : categorized by
 ``` 
 
-## Getting Started
-
-[Include instructions on how to set up the project locally, including any environment variables, dependencies, and commands to run the application]
-
 ## Team Members
 
 | Name | Email |
