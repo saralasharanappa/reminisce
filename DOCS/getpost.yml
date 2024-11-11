@@ -33,36 +33,45 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
-  schemas:
-    Post:
-      type: object
-      required:
-        - title
-        - message
-        - creator
-        - tags
-        - selectedFile
-        - likeCount
-        - createdAt
-      properties:
-        title:
-          type: string
-        message:
-          type: string
-        creator:
-          type: string
-        tags:
-          type: array
-          items:
+  components:
+    schemas:
+      Post:
+        type: object
+        properties:
+          _id:
             type: string
-        selectedFile:
-          type: string
-        likeCount:
-          type: integer
-          default: 0
-        createdAt:
-          type: string
-          format: date-time
+            description: The auto-generated ID of the post.
+          title:
+            type: string
+            description: The title of the post.
+          message:
+            type: string
+            description: The content of the post.
+          creator:
+            type: string
+            description: The creator's username of the post.
+          tags:
+            type: array
+            items:
+              type: string
+            description: Tags associated with the post.
+          selectedFile:
+            type: string
+            description: Base64 encoded image data of the post.
+          likeCount:
+            type: integer
+            default: 0
+            description: The count of likes the post has received.
+          createdAt:
+            type: string
+            format: date-time
+            description: The date and time when the post was created.
+        required:
+          - title
+          - message
+          - creator
+          - tags
+          - selectedFile
     Error:
       type: object
       required:
