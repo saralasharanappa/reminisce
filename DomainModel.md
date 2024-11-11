@@ -51,3 +51,4 @@ classDiagram
     Comment "1" -- "1" User : "authored by"
     User "1" -- "*" Like : "likes"
     Post "1" -- "*" Like : "liked by"
+``` 
