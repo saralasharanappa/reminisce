@@ -43,8 +43,8 @@ Reminisce is a full-stack social media application designed to capture and share
 - **Backend**: Node.js with Express.js
 - **Database**: MongoDB
 - **Authentication**: JWT and Google OAuth
-- **State Management**: [Your chosen state management library, e.g., Redux, Context API]
-- **Styling**: [Your chosen CSS framework or methodology, e.g., Styled-components, Tailwind CSS]
+- **State Management**: Redux, Context API
+- **Styling**: Styled-components, Tailwind CSS
 
 ## Domain Model
 
