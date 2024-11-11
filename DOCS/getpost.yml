@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  title: Posts API
+  description: API for managing blog posts
+  version: "1.0"
+servers:
+  - url: 'http://localhost:5000'
+    description: Local server
+paths:
+  /posts/{id}:
+    get:
+      summary: Retrieves a single post
+      description: Returns a single blog post by its ID.
+      operationId: getPost
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the blog post
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Post:
+      type: object
+      required:
+        - title
+        - message
+        - creator
+        - tags
+        - selectedFile
+        - likeCount
+        - createdAt
+      properties:
+        title:
+          type: string
+        message:
+          type: string
+        creator:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        selectedFile:
+          type: string
+        likeCount:
+          type: integer
+          default: 0
+        createdAt:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
