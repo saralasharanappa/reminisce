@@ -1,0 +1,89 @@
+openapi: 3.0.0
+info:
+  title: Delete Post API
+  version: 1.0.0
+  description: API for deleting blog posts
+
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  /posts/{id}:
+    delete:
+      summary: Delete a post
+      description: Deletes a specific blog post by its ID
+      operationId: deletePost
+      tags:
+        - posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the post to delete
+          schema:
+            type: string
+            format: objectid
+      responses:
+        '200':
+          description: Post successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Post:
+      type: object
+      required:
+        - title
+        - message
+        - creator
+        - tags
+        - selectedFile
+        - likeCount
+        - createdAt
+      properties:
+        title:
+          type: string
+        message:
+          type: string
+        creator:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        selectedFile:
+          type: string
+        likeCount:
+          type: integer
+          default: 0
+        createdAt:
+          type: string
+          format: date-time
+    DeleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Post deleted successfully."
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
