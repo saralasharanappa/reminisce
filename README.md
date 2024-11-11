@@ -46,6 +46,39 @@ Reminisce is a full-stack social media application designed to capture and share
 - **State Management**: [Your chosen state management library, e.g., Redux, Context API]
 - **Styling**: [Your chosen CSS framework or methodology, e.g., Styled-components, Tailwind CSS]
 
+## Domain Model
+
+```mermaid
+---
+title: Reminisce
+---
+classDiagram
+    class User {
+      +String id
+      +String username
+      +String email
+      +String password
+      +List~Post~ posts
+    }
+ 
+    class Post {
+      +String id
+      +String title
+      +String content
+      +DateTime createdAt
+      +User user
+      +List~String~ tags
+    }
+ 
+    class Tag {
+      +String name
+    }
+ 
+    User "1" --* "many" Post : creates
+    Post "many" -- "1" User : belongs to
+    Post "many" --* "many" Tag : categorized by
+  
+
 ## Getting Started
 
 [Include instructions on how to set up the project locally, including any environment variables, dependencies, and commands to run the application]
