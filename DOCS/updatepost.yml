@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Update Post API
-  description: API fot updating blog posts
+  description: API for updating blog posts
   version: "1.0.0"
 servers:
   - url: http://localhost:5000
@@ -82,3 +82,10 @@ components:
         - creator
         - tags
         - selectedFile
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
