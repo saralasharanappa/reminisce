@@ -1,32 +1,48 @@
 openapi: 3.0.0
 info:
-  title: Posts API
-  description: API for managing blog posts
-  version: "1.0"
+  title: Update Post API
+  description: API for updating blog posts
+  version: "1.0.0"
 servers:
-  - url: 'http://localhost:5000'
-    description: Local server
+  - url: http://localhost:5000
 paths:
-  /posts:
-    get:
-      summary: Retrieves all posts
-      description: Returns an array of all the blog posts in the database.
-      operationId: getPosts
+  /posts/{id}:
+    patch:
+      summary: Update a post
+      operationId: updatePost
+      tags:
+        - posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the post to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+            example:
+              title: "Updated Title"
+              message: "Updated content of the post."
+              creator: "User1"
+              tags: ["updated", "post"]
+              selectedFile: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA..."
       responses:
         '200':
-          description: A list of posts
+          description: Successfully updated post
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Post'
+                $ref: '#/components/schemas/Post'
         '404':
-          description: Unable to retrieve posts
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          description: Post not found
+        '400':
+          description: Invalid input, object invalid
+
 components:
   schemas:
     Post:

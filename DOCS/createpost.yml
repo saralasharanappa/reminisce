@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+  title: Create Post API
+  version: 1.0.0
+  description: API for creating blog posts
+
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  /posts:
+    post:
+      summary: Create a new post
+      description: Creates a new blog post with the provided details
+      operationId: createPost
+      tags:
+        - posts
+      requestBody:
+        description: Post details to create a new blog entry
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPost'
+      responses:
+        '201':
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    NewPost:
+      type: object
+      required:
+        - title
+        - message
+        - creator
+        - tags
+      properties:
+        title:
+          type: string
+          description: Title of the blog post
+        message:
+          type: string
+          description: Content of the blog post
+        creator:
+          type: string
+          description: Author or creator of the blog post
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the post
+        selectedFile:
+          type: string
+          description: URL or path to an image or file associated with the post
+        likeCount:
+          type: integer
+          description: Initial like count for the post
+          default: 0
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp of post creation
+
+    Post:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/NewPost'
+      properties:
+        id:
+          type: string
+          format: objectid
+          description: Unique identifier for the post
+
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Error message
