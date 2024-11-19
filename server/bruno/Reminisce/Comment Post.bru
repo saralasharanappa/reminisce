@@ -1,0 +1,23 @@
+meta {
+  name: Comment Post
+  type: http
+  seq: 12
+}
+
+post {
+  url: http://localhost:5005/posts/673cc32cf34e14ba1b893c49/commentPost
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQGV4YW1wbGUuY29tIiwiaWQiOiI2NzNjYzBlMGYzNGUxNGJhMWI4OTNjM2QiLCJpYXQiOjE3MzIwMzQ4MTksImV4cCI6MTczMjAzODQxOX0.rN07sjtkiW55RuB0V7M_5fKi6cQ5IGp9syiZbXLv3TI
+}
+
+body:json {
+  
+  {
+    "value": "This is a comment on the post."
+  }
+  
+}

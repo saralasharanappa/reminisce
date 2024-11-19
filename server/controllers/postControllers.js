@@ -5,10 +5,21 @@ export const getPost = async (req, res) => {
   const { id } = req.params;
 
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid post ID" });
+    }
+
     const post = await postService.getPostById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
     res.status(200).json(post);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -19,7 +30,9 @@ export const getPosts = async (req, res) => {
     const postsData = await postService.getPosts(page);
     res.status(200).json(postsData);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -28,9 +41,18 @@ export const getPostsBySearch = async (req, res) => {
 
   try {
     const posts = await postService.getPostsBySearch(searchQuery, tags);
-    res.json({ data: posts });
+
+    if (!posts || posts.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No posts found matching the search criteria" });
+    }
+
+    res.status(200).json({ data: posts });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -38,17 +60,22 @@ export const deletePost = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Ensure the id is a valid MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ message: "No post with that ID" });
+      return res.status(400).json({ message: "Invalid post ID" });
     }
 
-    // Call the service to delete the post
-    await postService.deletePost(id);
+    const post = await postService.getPostById(id);
 
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    await postService.deletePost(id);
     res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -63,9 +90,16 @@ export const createPost = async (req, res) => {
 
   try {
     const newPost = await postService.createPost(postData);
+
+    if (!newPost) {
+      return res.status(400).json({ message: "Failed to create post" });
+    }
+
     res.status(201).json(newPost);
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -73,15 +107,22 @@ export const commentPost = async (req, res) => {
   const { id } = req.params;
   const { value } = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).send(`No post with id: ${id}`);
-  }
-
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid post ID" });
+    }
+
     const updatedPost = await postService.commentOnPost(id, value);
-    res.json(updatedPost);
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json(updatedPost);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -89,18 +130,27 @@ export const likePost = async (req, res) => {
   const { id } = req.params;
 
   if (!req.userId) {
-    return res.json({ message: "Unauthenticated!" });
-  }
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).send(`No post with id: ${id}`);
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: User not authenticated" });
   }
 
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid post ID" });
+    }
+
     const updatedPost = await postService.likePost(id, req.userId);
-    res.json(updatedPost);
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json(updatedPost);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -108,14 +158,21 @@ export const updatePost = async (req, res) => {
   const { id } = req.params;
   const post = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).send(`No post with id: ${id}`);
-  }
-
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid post ID" });
+    }
+
     const updatedPost = await postService.updatePost(id, post);
-    res.json(updatedPost);
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json(updatedPost);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
