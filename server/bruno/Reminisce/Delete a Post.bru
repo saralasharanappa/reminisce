@@ -4,8 +4,12 @@ meta {
   seq: 10
 }
 
-get {
+delete {
   url: http://localhost:5005/posts/673cc180f34e14ba1b893c40
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQGV4YW1wbGUuY29tIiwiaWQiOiI2NzNjYzBlMGYzNGUxNGJhMWI4OTNjM2QiLCJpYXQiOjE3MzIwMzc3MTIsImV4cCI6MTczMjA0MTMxMn0.q0zOxS74UdB53IUePX9Qx5D90bydbEEck0Lq5OXUNCU
 }

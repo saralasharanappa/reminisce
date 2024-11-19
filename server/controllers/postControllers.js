@@ -5,16 +5,20 @@ export const getPost = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Validate ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid post ID" });
     }
 
+    // Fetch the post
     const post = await postService.getPostById(id);
 
+    // Check if the post exists
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    // Return the post
     res.status(200).json(post);
   } catch (error) {
     res
