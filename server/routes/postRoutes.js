@@ -12,8 +12,13 @@ import {
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
+// Route for searching posts
 router.get("/search", getPostsBySearch);
+
+// Route for getting all posts
 router.get("/", getPosts);
+
+// Route for getting a specific post by ID
 router.get("/:id", getPost);
 
 // Route for creating a new post (protected)
