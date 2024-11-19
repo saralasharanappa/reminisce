@@ -28,3 +28,6 @@ router.post("/:id/commentPost", auth, commentPost);
 
 // Route for liking a post
 router.patch("/:id/likePost", auth, likePost);
+
+// Route for updating a post
+router.patch("/:id", auth, updatePost);
