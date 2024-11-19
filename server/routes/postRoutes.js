@@ -15,3 +15,9 @@ const router = express.Router();
 router.get("/search", getPostsBySearch);
 router.get("/", getPosts);
 router.get("/:id", getPost);
+
+// Route for creating a new post (protected)
+router.post("/", auth, createPost);
+
+// Route for deleting a post (protected)
+router.delete("/:id", auth, deletePost);
