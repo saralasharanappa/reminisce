@@ -37,3 +37,10 @@ export const createPost = async (postData) => {
 export const deletePost = async (id) => {
   return await PostMessage.findByIdAndRemove(id);
 };
+
+export const commentOnPost = async (id, value) => {
+  const post = await PostMessage.findById(id);
+  post.comments.push(value);
+
+  return await PostMessage.findByIdAndUpdate(id, post, { new: true });
+};

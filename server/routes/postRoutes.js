@@ -8,7 +8,7 @@ import {
   likePost,
   commentPost,
   getPostsBySearch,
-} from "../controllers/postController.js";
+} from "../controllers/postControllers.js";
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
@@ -21,3 +21,6 @@ router.post("/", auth, createPost);
 
 // Route for deleting a post (protected)
 router.delete("/:id", auth, deletePost);
+
+// Route for commenting on a post
+router.post("/:id/commentPost", auth, commentPost);
