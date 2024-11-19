@@ -6,7 +6,7 @@ import User from "../models/users.js";
 
 const JWT_SECRET = "test";
 
-
+// sigup service 
 export const signup = async (email, password, firstName, lastName) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -26,5 +26,30 @@ export const signup = async (email, password, firstName, lastName) => {
     });
   
     return { result, token };
+  };
+
+
+//   sigin service
+export const signin = async (email, password) => {
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      throw new Error("User doesn't exist.");
+    }
+  
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+    if (!isPasswordCorrect) {
+      throw new Error("Invalid Credentials.");
+    }
+  
+    const token = jwt.sign(
+      { email: existingUser.email, id: existingUser._id },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+  
+    return { result: existingUser, token };
   };
   
