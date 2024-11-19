@@ -34,3 +34,6 @@ export const createPost = async (postData) => {
   return await newPost.save();
 };
 
+export const deletePost = async (id) => {
+  return await PostMessage.findByIdAndRemove(id);
+};

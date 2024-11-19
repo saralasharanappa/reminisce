@@ -34,7 +34,23 @@ export const getPostsBySearch = async (req, res) => {
   }
 };
 
-
+export const deletePost = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      // Ensure the id is a valid MongoDB ObjectId
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ message: "No post with that ID" });
+      }
+  
+      // Call the service to delete the post
+      await postService.deletePost(id);
+  
+      res.status(200).json({ message: "Post deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
 
   export const createPost = async (req, res) => {
     const post = req.body;
