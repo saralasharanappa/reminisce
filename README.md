@@ -103,6 +103,65 @@ classDiagram
     Post "1" -- "*" Like : "liked by"
 ``` 
 
+
+## API Endpoints
+### Base URL: http://localhost:5002
+### Authentication
+- POST /auth/signup: Register a new user
+- POST /auth/signin: User login
+### Reminisce
+- GET /posts: Get all memories with pagination
+- GET /posts/search: Search for memories by title or tags
+- GET /posts/:id: Get a specific memory by ID
+- POST /posts: Create a new memory (authenticated)
+- PATCH /posts/:id: Update an existing memory (authenticated)
+- DELETE /posts/:id: Delete a memory (authenticated)
+### Likes
+- PATCH /posts/:id/likePost: Like or unlike a memory post (authenticated)
+### Comments
+- POST /posts/:id/commentPost: Add a comment to a memory post (authenticated)
+
+
+## Run Instructions
+Prerequisites
+Ensure the following are installed:
+
+Node.js
+MongoDB (running locally or a connection string for a cloud database like MongoDB Atlas)
+Setup Instructions
+Clone the repository:
+
+
+```bash
+git clone https://github.com/info-6150-fall-2024/final-project-syncspace/reminisce.git
+cd reminisce
+```
+Install dependencies:
+
+
+```bash
+cd server
+npm install
+```
+Set up environment variables:
+
+In the server directory, create a .env file with the following:
+env
+```
+PORT=5002
+MONGO_URI=<your_mongo_connection_string>
+```
+
+Start the application:
+
+Start the server:
+```
+Copy code
+cd server
+npm start
+```
+
+
 ## Team Members
 
 | Name | Email |
