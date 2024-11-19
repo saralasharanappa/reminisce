@@ -9,7 +9,7 @@ import {
   commentPost,
   likePost,
   getPostsBySearch,
-} from "../controllers/postController.js";
+} from "../controllers/postControllers.js";
 import auth from "../middleware/auth.js";
 
 const router = express.Router();

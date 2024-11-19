@@ -54,7 +54,7 @@ export const deletePost = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const post = req.body;
-
+  
   const postData = {
     ...post,
     creator: req.userId,
