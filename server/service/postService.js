@@ -2,10 +2,22 @@
 
 import PostMessage from "../models/postMessage.js";
 
+/**
+ * Retrieves a post by its ID.
+ * 
+ * @param {string} id - The ID of the post to retrieve
+ * @returns {Promise<Object>} The post document
+ */
 export const getPostById = async (id) => {
   return await PostMessage.findById(id);
 };
 
+/**
+ * Retrieves a paginated list of posts.
+ * 
+ * @param {number} page - The page number to retrieve
+ * @returns {Promise<Object>} Object containing posts data, current page, and total number of pages
+ */
 export const getPosts = async (page) => {
   const LIMIT = 6;
   const startIndex = (Number(page) - 1) * LIMIT;
@@ -22,6 +34,13 @@ export const getPosts = async (page) => {
   };
 };
 
+/**
+ * Searches for posts based on a search query and tags.
+ * 
+ * @param {string} searchQuery - The search query for post titles
+ * @param {string} tags - Comma-separated list of tags
+ * @returns {Promise<Array>} Array of matching post documents
+ */
 export const getPostsBySearch = async (searchQuery, tags) => {
   const title = new RegExp(searchQuery, "i");
   return await PostMessage.find({

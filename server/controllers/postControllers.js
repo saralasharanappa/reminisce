@@ -1,6 +1,13 @@
 import mongoose from "mongoose";
 import * as postService from "../service/postService.js";
 
+/**
+ * Retrieves a specific post by its ID.
+ * 
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON response with post data or error message
+ */
 export const getPost = async (req, res) => {
   const { id } = req.params;
 
@@ -27,6 +34,13 @@ export const getPost = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves a paginated list of posts.
+ * 
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON response with posts data or error message
+ */
 export const getPosts = async (req, res) => {
   const { page } = req.query;
 
@@ -40,6 +54,13 @@ export const getPosts = async (req, res) => {
   }
 };
 
+/**
+ * Searches for posts based on a search query and tags.
+ * 
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON response with matching posts or error message
+ */
 export const getPostsBySearch = async (req, res) => {
   const { searchQuery, tags } = req.query;
 
