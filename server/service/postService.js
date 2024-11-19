@@ -28,3 +28,9 @@ export const getPostsBySearch = async (searchQuery, tags) => {
     $or: [{ title }, { tags: { $in: tags.split(",") } }],
   });
 };
+
+export const createPost = async (postData) => {
+  const newPost = new PostMessage(postData);
+  return await newPost.save();
+};
+
