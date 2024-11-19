@@ -59,3 +59,11 @@ export const likePost = async (id, userId) => {
 
   return await PostMessage.findByIdAndUpdate(id, post, { new: true });
 };
+
+export const updatePost = async (id, postData) => {
+  return await PostMessage.findByIdAndUpdate(
+    id,
+    { ...postData, _id: id },
+    { new: true }
+  );
+};

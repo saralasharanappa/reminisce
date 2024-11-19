@@ -54,7 +54,7 @@ export const deletePost = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const post = req.body;
-  
+
   const postData = {
     ...post,
     creator: req.userId,
@@ -98,6 +98,22 @@ export const likePost = async (req, res) => {
 
   try {
     const updatedPost = await postService.likePost(id, req.userId);
+    res.json(updatedPost);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const updatePost = async (req, res) => {
+  const { id } = req.params;
+  const post = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).send(`No post with id: ${id}`);
+  }
+
+  try {
+    const updatedPost = await postService.updatePost(id, post);
     res.json(updatedPost);
   } catch (error) {
     res.status(400).json({ message: error.message });
