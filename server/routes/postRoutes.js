@@ -7,6 +7,7 @@ import {
   deletePost,
   likePost,
   commentPost,
+  likePost,
   getPostsBySearch,
 } from "../controllers/postController.js";
 import auth from "../middleware/auth.js";
@@ -21,3 +22,9 @@ router.post("/", auth, createPost);
 
 // Route for deleting a post (protected)
 router.delete("/:id", auth, deletePost);
+
+// Route for commenting on a post
+router.post("/:id/commentPost", auth, commentPost);
+
+// Route for liking a post
+router.patch("/:id/likePost", auth, likePost);

@@ -37,3 +37,25 @@ export const createPost = async (postData) => {
 export const deletePost = async (id) => {
   return await PostMessage.findByIdAndRemove(id);
 };
+
+export const commentOnPost = async (id, value) => {
+  const post = await PostMessage.findById(id);
+  post.comments.push(value);
+
+  return await PostMessage.findByIdAndUpdate(id, post, { new: true });
+};
+
+export const likePost = async (id, userId) => {
+  const post = await PostMessage.findById(id);
+  const index = post.likes.findIndex((id) => id === String(userId));
+
+  if (index === -1) {
+    // Like the post
+    post.likes.push(userId);
+  } else {
+    // Unlike the post
+    post.likes = post.likes.filter((id) => id !== String(userId));
+  }
+
+  return await PostMessage.findByIdAndUpdate(id, post, { new: true });
+};
