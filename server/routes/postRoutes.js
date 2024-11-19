@@ -5,7 +5,6 @@ import {
   createPost,
   updatePost,
   deletePost,
-  likePost,
   commentPost,
   likePost,
   getPostsBySearch,
@@ -31,3 +30,5 @@ router.patch("/:id/likePost", auth, likePost);
 
 // Route for updating a post
 router.patch("/:id", auth, updatePost);
+
+export default router;

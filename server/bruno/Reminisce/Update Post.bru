@@ -1,0 +1,24 @@
+meta {
+  name: Update Post
+  type: http
+  seq: 9
+}
+
+patch {
+  url: http://localhost:5005/posts/673cc180f34e14ba1b893c40
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQGV4YW1wbGUuY29tIiwiaWQiOiI2NzNjYzBlMGYzNGUxNGJhMWI4OTNjM2QiLCJpYXQiOjE3MzIwMzQ4MTksImV4cCI6MTczMjAzODQxOX0.rN07sjtkiW55RuB0V7M_5fKi6cQ5IGp9syiZbXLv3TI
+}
+
+body:json {
+  {
+    "title": "Updated Post Title",
+    "message": "this is the updated content of the post",
+    "tags":["updated", "post"],
+    "selectedFile":"base64EncodedImageString"
+  }
+}

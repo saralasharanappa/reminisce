@@ -1,0 +1,19 @@
+meta {
+  name: User Signin
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5005/user/signin
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "testuser@example.com",
+    "password": "SecurePassword123"
+  }
+  
+}
