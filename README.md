@@ -148,7 +148,7 @@ Set up environment variables:
 In the server directory, create a .env file with the following:
 env
 ```
-PORT=5002
+PORT=<APPLICATION_PORT>
 MONGO_URI=<your_mongo_connection_string>
 ```
 
@@ -160,6 +160,14 @@ Copy code
 cd server
 npm start
 ```
+Start the Client:
+```
+Copy code
+cd client
+npm start
+```
+
+browse http://localhost:<APPLICATION_PORT>/posts
 
 
 ## Team Members
