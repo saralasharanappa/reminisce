@@ -1,9 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Post from "./Post/Post";
+import rootReducer from "../../reducers";
+
+type RootState = ReturnType<typeof rootReducer>;
 
 const Posts = ({ setCurrentId }) => {
-  const { posts, isLoading } = useSelector((state) => state.posts);
+  const { posts, isLoading } = useSelector((state: RootState) => state.posts);
 
   if (!posts.length && !isLoading) {
     return <div className="text-center text-xl mt-5">No Posts!</div>;

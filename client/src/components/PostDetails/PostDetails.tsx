@@ -4,9 +4,27 @@ import moment from "moment";
 import { useParams, useNavigate } from "react-router-dom";
 import { getPost, getPostsBySearch } from "../../actions/posts";
 import CommentSection from "./CommentSection";
+import rootReducer from "../../reducers";
+
+interface Post {
+  _id: string;
+  title: string;
+  message: string;
+  tags: string[];
+  selectedFile: string;
+  createdAt: string;
+  creator: string;
+  name?: string;
+  likes: string[];
+  comments: string[];
+}
+
+type RootState = ReturnType<typeof rootReducer>;
 
 const PostDetails = () => {
-  const { post, posts, isLoading } = useSelector((state) => state.posts);
+  const { post, posts, isLoading } = useSelector(
+    (state: RootState) => state.posts
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -25,8 +43,8 @@ const PostDetails = () => {
 
   if (!post) return null;
 
-  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
-  const openPost = (id) => navigate(`/posts/${id}`);
+  const recommendedPosts = posts.filter(({ _id }: Post) => _id !== post._id);
+  const openPost = (id: string) => navigate(`/posts/${id}`);
 
   if (isLoading) {
     return (
@@ -53,7 +71,7 @@ const PostDetails = () => {
           ))}
         </div>
         <p>{post.message}</p>
-        <p className="text-gray-600">Created by: {post.name}</p>
+        <p className="text-gray-600">Created by: {post.creator || "Unknown"}</p>
         <p className="text-gray-500">{moment(post.createdAt).fromNow()}</p>
 
         <CommentSection post={post} />
@@ -75,14 +93,14 @@ const PostDetails = () => {
           <hr />
           <div className="grid grid-cols-3 gap-4">
             {recommendedPosts.map(
-              ({ title, name, message, likes, selectedFile, _id }) => (
+              ({ title, name, message, likes, selectedFile, _id }: Post) => (
                 <div
                   key={_id}
                   className="p-3 cursor-pointer"
                   onClick={() => openPost(_id)}
                 >
                   <h6 className="text-lg font-bold">{title}</h6>
-                  <p className="text-sm">{name}</p>
+                  <p className="text-sm">{name || "Unknown"}</p>
                   <p className="text-sm">{message}</p>
                   <p className="text-sm">Likes: {likes.length}</p>
                   {selectedFile && (

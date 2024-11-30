@@ -2,9 +2,12 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../actions/posts";
 import { useNavigate } from "react-router-dom";
+import rootReducer from "../reducers";
+
+type RootState = ReturnType<typeof rootReducer>;
 
 const Paginate = ({ page }) => {
-  const { numberOfPages } = useSelector((state) => state.posts);
+  const { numberOfPages } = useSelector((state: RootState) => state.posts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

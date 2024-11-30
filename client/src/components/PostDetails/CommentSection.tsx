@@ -3,18 +3,22 @@ import { useDispatch } from "react-redux";
 import { commentPost } from "../../actions/posts";
 
 const CommentSection = ({ post }) => {
-  const [comments, setComments] = useState(post?.comments);
+  const [comments, setComments] = useState(post?.comments || []);
   const [comment, setComment] = useState("");
-  const user = JSON.parse(localStorage.getItem("profile"));
+  const user = JSON.parse(localStorage.getItem("profile") || "null");
   const dispatch = useDispatch();
-  const commentsRef = useRef();
+
+  // Define the type for commentsRef
+  const commentsRef = useRef<HTMLDivElement | null>(null);
 
   const handleComment = async () => {
-    const finalComment = `${user.result.name}: ${comment}`;
+    const finalComment = `${user?.result?.name}: ${comment}`;
     const newComments = await dispatch(commentPost(finalComment, post._id));
     setComments(newComments);
     setComment("");
-    commentsRef.current.scrollIntoView({
+
+    // Safely access commentsRef.current
+    commentsRef.current?.scrollIntoView({
       behavior: "smooth",
     });
   };
@@ -36,7 +40,7 @@ const CommentSection = ({ post }) => {
           <h6 className="text-base font-bold mb-2">Write a Comment</h6>
           <textarea
             className="w-full p-2 border rounded mb-2"
-            rows="4"
+            rows={4}
             placeholder="Comment"
             value={comment}
             onChange={(e) => setComment(e.target.value)}

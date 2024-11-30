@@ -8,7 +8,7 @@ import {
   Container,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Input from "./Input"; // Make sure this is updated for MUI v5 if necessary
+import Input from "./Input";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import Icon from "./icon";
 import { useDispatch } from "react-redux";
@@ -36,9 +36,10 @@ const Auth = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp);
     setShowPassword(false);
   };
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignUp) {

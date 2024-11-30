@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import memoriesLogo from "../../images/memoriesLogo.png";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode"; // Fixing import here
 
 const Navbar = () => {

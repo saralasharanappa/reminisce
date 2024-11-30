@@ -10,8 +10,41 @@ import {
   END_LOADING,
   COMMENT,
 } from "../constants/actionTypes";
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (state = { isLoading: true, posts: [] }, action) => {
+
+// Define the structure of a Post
+export interface Post {
+  _id: string;
+  title: string;
+  message: string;
+  creator: string;
+  tags: string[];
+  selectedFile: string;
+  createdAt: string;
+  likes: string[];
+  comments: string[];
+}
+
+// Define the shape of the state
+interface PostsState {
+  isLoading: boolean;
+  posts: Post[];
+  post?: Post;
+  currentPage?: number;
+  numberOfPages?: number;
+}
+
+// Define the shape of the actions
+interface PostsAction {
+  type: string;
+  payload?: any; // Adjust based on the structure of the action payload
+}
+
+const initialState: PostsState = {
+  isLoading: true,
+  posts: [],
+};
+
+const postsReducer = (state: PostsState = initialState, action: PostsAction): PostsState => {
   switch (action.type) {
     case START_LOADING:
       return { ...state, isLoading: true };
@@ -63,3 +96,5 @@ export default (state = { isLoading: true, posts: [] }, action) => {
       return state;
   }
 };
+
+export default postsReducer;

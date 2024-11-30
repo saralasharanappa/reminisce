@@ -3,21 +3,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
 import FileBase from "react-file-base64";
 import { useNavigate } from "react-router-dom";
+import rootReducer from "../../reducers"; // Import rootReducer
 
-const Form = ({ currentId, setCurrentId }) => {
+// Derive RootState directly from rootReducer
+type RootState = ReturnType<typeof rootReducer>;
+
+interface FormProps {
+  currentId: number;
+  setCurrentId: (id: number) => void;
+}
+
+const Form: React.FC<FormProps> = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
     title: "",
     message: "",
-    tags: "",
+    tags: [] as string[],
     selectedFile: "",
   });
 
-  const post = useSelector((state) =>
-    currentId ? state.posts.posts.find((p) => p._id === currentId) : null
+  const post = useSelector((state: RootState) =>
+    currentId
+      ? state.posts.posts.find((p) => p._id === currentId.toString())
+      : null
   );
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("profile"));
+  const user = JSON.parse(localStorage.getItem("profile") || "null");
 
   useEffect(() => {
     if (post) setPostData(post);
@@ -25,10 +37,10 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const clear = () => {
     setCurrentId(0);
-    setPostData({ title: "", message: "", tags: "", selectedFile: "" });
+    setPostData({ title: "", message: "", tags: [], selectedFile: "" });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (currentId === 0) {
       dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
@@ -87,7 +99,7 @@ const Form = ({ currentId, setCurrentId }) => {
           name="tags"
           placeholder="Tags (comma separated)"
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-          value={postData.tags}
+          value={postData.tags.join(",")}
           onChange={(e) =>
             setPostData({ ...postData, tags: e.target.value.split(",") })
           }
