@@ -18,20 +18,37 @@ export const getPostById = async (id) => {
  * @param {number} page - The page number to retrieve
  * @returns {Promise<Object>} Object containing posts data, current page, and total number of pages
  */
-export const getPosts = async (page) => {
-  const LIMIT = 6;
-  const startIndex = (Number(page) - 1) * LIMIT;
-  const total = await PostMessage.countDocuments({});
-  const posts = await PostMessage.find()
-    .sort({ _id: -1 })
-    .limit(LIMIT)
-    .skip(startIndex);
+export const getPosts = async (page = 1) => {
+  try {
+    console.log("POST SERVICE - Page:", page);
+    const LIMIT = 6;
+    const startIndex = (Number(page) - 1) * LIMIT;
+    
+    // Add error handling for invalid page numbers
+    if (isNaN(startIndex) || startIndex < 0) {
+      throw new Error('Invalid page number');
+    }
 
-  return {
-    data: posts,
-    currentPage: Number(page),
-    numberOfPages: Math.ceil(total / LIMIT),
-  };
+    const total = await PostMessage.countDocuments({});
+    console.log("Total documents:", total);
+
+    const posts = await PostMessage.find()
+      .sort({ _id: -1 })
+      .limit(LIMIT)
+      .skip(startIndex)
+      .lean(); // Add lean() for better performance
+
+    console.log("Found posts:", posts.length);
+
+    return {
+      data: posts,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / LIMIT),
+    };
+  } catch (error) {
+    console.error("Error in getPosts service:", error);
+    throw error;
+  }
 };
 
 /**
@@ -41,12 +58,42 @@ export const getPosts = async (page) => {
  * @param {string} tags - Comma-separated list of tags
  * @returns {Promise<Array>} Array of matching post documents
  */
+// export const getPostsBySearch = async (searchQuery, tags) => {
+//   const title = new RegExp(searchQuery, "i");
+//   return await PostMessage.find({
+//     $or: [{ title }, { tags: { $in: tags.split(",") } }],
+//   });
+// };
+
 export const getPostsBySearch = async (searchQuery, tags) => {
-  const title = new RegExp(searchQuery, "i");
-  return await PostMessage.find({
-    $or: [{ title }, { tags: { $in: tags.split(",") } }],
-  });
+  try {
+    // Create search criteria
+    let searchCriteria = {};
+
+    // Handle search query
+    if (searchQuery && searchQuery !== 'none') {
+      const searchRegex = new RegExp(searchQuery, "i");
+      searchCriteria = {
+        $or: [
+          { title: searchRegex },
+          { message: searchRegex }
+        ]
+      };
+    }
+
+    // Execute search with criteria
+    console.log('Search criteria:', JSON.stringify(searchCriteria, null, 2));
+    const posts = await PostMessage.find(searchCriteria);
+    console.log(`Found ${posts.length} posts matching criteria`);
+    
+    return posts;
+  } catch (error) {
+    console.error('Search error:', error);
+    throw error;
+  }
 };
+
+
 
 export const createPost = async (postData) => {
   const newPost = new PostMessage(postData);
