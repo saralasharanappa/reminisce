@@ -2,20 +2,23 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../actions/posts";
 import { useNavigate } from "react-router-dom";
-import rootReducer from "../reducers";
+import { RootState } from "../reducers";
+import { AppDispatch } from "../types/store";
 
-type RootState = ReturnType<typeof rootReducer>;
+interface PaginateProps {
+  page: string | number;
+}
 
-const Paginate = ({ page }) => {
+const Paginate = ({ page }: PaginateProps) => {
   const { numberOfPages } = useSelector((state: RootState) => state.posts);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (page) dispatch(getPosts(page));
   }, [dispatch, page]);
 
-  const changePage = (newPage) => {
+  const changePage = (newPage: number) => {
     navigate(`/posts?page=${newPage}`);
   };
 
