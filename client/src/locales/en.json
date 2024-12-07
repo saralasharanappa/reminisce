@@ -1,0 +1,58 @@
+{
+    "navbar": {
+      "title": "Reminisce",
+      "signIn": "Sign In",
+      "logout": "Logout",
+      "searchPlaceholder": "Search Memories",
+      "create": "Create",
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "search": "Search",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode"
+ 
+    },
+    "auth": {
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email Address",
+        "password": "Password",
+        "confirmPassword": "Repeat Password",
+        "submitSignIn": "Sign In",
+        "submitSignUp": "Sign Up",
+        "alreadyHaveAccount": "Already have an account? Sign In",
+        "dontHaveAccount": "Don't have an account? Sign Up"
+      },
+      "profile": {
+        "title": "Profile",
+        "altProfilePicture": "Profile Picture",
+        "upload": "Upload",
+        "bio": "Bio",
+        "bioPlaceholder": "Write something about yourself...",
+        "contact": "Contact",
+        "contactPlaceholder": "Your contact information...",
+        "saveChanges": "Save Changes",
+        "recentActivities": "Your Recent Activities",
+        "activity1": "Created Post 1",
+        "activity2": "Liked Post 2"
+      },
+      "postForm": {
+        "signInPrompt": "Please Sign In to create your own memories and like others' memories!",
+        "creating": "Creating a Memory",
+        "editing": "Editing \"{{title}}\"",
+        "titlePlaceholder": "Title",
+        "messagePlaceholder": "Message",
+        "tagsPlaceholder": "Tags (comma separated)",
+        "submitButton": "Submit",
+        "clearButton": "Clear"
+      },
+      "post": {
+        "readAloud": "Read Aloud",
+        "downloadPDF": "Download as PDF",
+        "sharePost": "Share Post"
+      }
+
+  }
+  

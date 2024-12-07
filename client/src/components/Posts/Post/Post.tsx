@@ -1,29 +1,40 @@
 import React, { useState } from "react";
 import moment from "moment";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../types/store";
 import { deletePost, likePost } from "../../../actions/posts";
 import { useNavigate } from "react-router-dom";
 
 const Post = ({ post, setCurrentId }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("profile"));
   const [likes, setLikes] = useState(post?.likes);
-  const userId = user?.result.googleId || user?.result?._id;
+
+  const handleEdit = () => {
+    if (user?.result?._id === post?.creator) {
+      navigate(`/edit-post/${post._id}`); // Navigate to the edit page with post ID
+    } else {
+      console.log("You are not the creator of this post.");
+    }
+  };
+
+  // Ensure both values are strings for comparison
+  const isCreator = String(user?.result?._id) === String(post?.creator);
 
   const handleLike = () => {
-    const alreadyLiked = post.likes.includes(userId);
+    const alreadyLiked = likes.includes(user?.result?._id);
     dispatch(likePost(post._id));
     setLikes(
       alreadyLiked
-        ? post.likes.filter((id) => id !== userId)
-        : [...post.likes, userId]
+        ? likes.filter((id) => id !== user?.result?._id)
+        : [...likes, user?.result?._id]
     );
   };
 
   const Likes = () => {
     if (likes.length > 0) {
-      return likes.includes(userId) ? (
+      return likes.includes(user?.result?._id) ? (
         <span>
           👍 &nbsp;
           {likes.length > 2
@@ -56,14 +67,13 @@ const Post = ({ post, setCurrentId }) => {
         </div>
       </button>
 
-      {/* Edit Button */}
-      {(user?.result?.googleId === post?.creator ||
-        user?.result?._id === post?.creator) && (
+      {/* Edit Button (Visible only to the creator) */}
+      {isCreator && (
         <button
           className="absolute top-5 right-5 text-white bg-gray-800 bg-opacity-75 rounded-full p-1"
           onClick={(e) => {
             e.stopPropagation();
-            setCurrentId(post._id);
+            handleEdit();
           }}
         >
           ⋮
@@ -90,8 +100,7 @@ const Post = ({ post, setCurrentId }) => {
         >
           <Likes />
         </button>
-        {(user?.result?.googleId === post?.creator ||
-          user?.result?._id === post?.creator) && (
+        {isCreator && (
           <button
             className="text-red-500 hover:text-red-600 focus:outline-none flex items-center"
             onClick={() => dispatch(deletePost(post._id))}

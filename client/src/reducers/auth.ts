@@ -1,28 +1,44 @@
-import { AUTH, LOGOUT } from "../constants/actionTypes";
+// src/reducers/auth.ts
+import { AUTH, LOGOUT } from "../constants/actionTypes.js";
 
-// Define the shape of the state
+// Defining the types directly in the reducer
 interface AuthState {
-  authData: Record<string, any> | null; // Adjust the shape based on actual `authData`
+  authData: any | null;
 }
 
-// Define the shape of the actions
-interface AuthAction {
+interface Action {
   type: string;
-  data?: any; // Adjust based on the structure of the action payload
+  data: any;
 }
 
-const initialState: AuthState = {
-  authData: null,
-};
-
-const authReducer = (state: AuthState = initialState, action: AuthAction): AuthState => {
+const authReducer = (
+  state: AuthState = { authData: null },
+  action: Action
+): AuthState => {
   switch (action.type) {
     case AUTH:
-      localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
-      return { ...state, authData: action?.data };
+      try {
+        // Store minimal user data
+        const minimalUserData = {
+          ...action.data,
+          result: {
+            ...action.data.result,
+            // Either store URL or remove profilePicture from localStorage
+            profilePicture: undefined, // Don't store image in localStorage
+          },
+        };
+        localStorage.setItem("profile", JSON.stringify(minimalUserData));
+        return { ...state, authData: action.data };
+      } catch (error) {
+        console.error("Error in auth reducer:", error);
+        return state;
+      }
+
     case LOGOUT:
+      // Clear localStorage on logout
       localStorage.clear();
       return { ...state, authData: null };
+
     default:
       return state;
   }

@@ -9,11 +9,12 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Input from "./Input";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import Icon from "./icon";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signin, signup } from "../../actions/auth";
+import { AppDispatch } from "../../types/store";
+import { useTranslation } from "react-i18next";
 
 const initialState = {
   firstName: "",
@@ -24,11 +25,20 @@ const initialState = {
 };
 
 const Auth = () => {
-  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
   const history = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState(initialState);
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -40,27 +50,102 @@ const Auth = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    };
+console.log(errors, isLoading)
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+      isValid = false;
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+      isValid = false;
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+      isValid = false;
+    }
+
     if (isSignUp) {
-      dispatch(signup(formData, history));
-    } else {
-      dispatch(signin(formData, history));
+      // First Name validation
+      if (!formData.firstName) {
+        newErrors.firstName = "First name is required";
+        isValid = false;
+      }
+
+      // Last Name validation
+      if (!formData.lastName) {
+        newErrors.lastName = "Last name is required";
+        isValid = false;
+      }
+
+      // Confirm Password validation
+      if (!formData.confirmPassword) {
+        newErrors.confirmPassword = "Please confirm your password";
+        isValid = false;
+      } else if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match";
+        isValid = false;
+      }
     }
+
+    setErrors(newErrors);
+    return isValid;
   };
-  const onSuccess = (res) => {
-    const result = res?.profileObj;
-    const token = res?.tokenId;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (!validateForm()) {
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      dispatch({ type: "AUTH", data: { result, token } });
-      history("/");
+      if (isSignUp) {
+        await dispatch(signup(formData, () => {
+          history("/posts");
+          window.dispatchEvent(new Event("storage"));
+        }));
+      } else {
+        await dispatch(signin(formData, () => {
+          history("/posts");
+          window.dispatchEvent(new Event("storage"));
+        }));
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Authentication error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
-  const onError = (error) => {
-    console.log("Google sign in failed! Try again later.", error);
-  };
+  // const onSuccess = (res) => {
+  //   const result = res?.profileObj;
+  //   const token = res?.tokenId;
+  //   try {
+  //     dispatch({ type: "AUTH", data: { result, token } });
+  //     history("/");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // const onError = (error) => {
+  //   console.log("Google sign in failed! Try again later.", error);
+  // };
 
   return (
     <GoogleOAuthProvider clientId="">
@@ -70,7 +155,7 @@ const Auth = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography variant="h5" className="text-center my-3">
-            {isSignUp ? "Sign Up" : "Sign In"}
+            {isSignUp ? t("auth.signUp") : t("auth.signIn")}
           </Typography>
           <form onSubmit={handleSubmit} className="space-y-3">
             <Grid container spacing={2}>
@@ -78,14 +163,14 @@ const Auth = () => {
                 <>
                   <Input
                     name="firstName"
-                    label="First Name"
+                    label={t("auth.firstName")}
                     handleChange={handleChange}
                     autoFocus
                     half
                   />
                   <Input
                     name="lastName"
-                    label="Last Name"
+                    label={t("auth.lastName")}
                     handleChange={handleChange}
                     half
                   />
@@ -93,13 +178,13 @@ const Auth = () => {
               )}
               <Input
                 name="email"
-                label="Email Address"
+                label={t("auth.email")}
                 handleChange={handleChange}
                 type="email"
               />
               <Input
                 name="password"
-                label="Password"
+                label={t("auth.password")}
                 handleChange={handleChange}
                 type={showPassword ? "text" : "password"}
                 handleShowPassword={handleShowPassword}
@@ -107,7 +192,7 @@ const Auth = () => {
               {isSignUp && (
                 <Input
                   name="confirmPassword"
-                  label="Repeat Password"
+                  label={t("auth.confirmPassword")}
                   handleChange={handleChange}
                   type="password"
                 />
@@ -120,31 +205,14 @@ const Auth = () => {
               color="primary"
               className="mt-3"
             >
-              {isSignUp ? "Sign Up" : "Sign In"}
+              {isSignUp ? t("auth.submitSignUp") : t("auth.submitSignIn")}
             </Button>
-            {/* <GoogleLogin
-              render={(renderProps) => (
-                <Button
-                  className="mt-3 w-full"
-                  color="primary"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                  startIcon={<Icon />}
-                  variant="contained"
-                >
-                  Google Sign In
-                </Button>
-              )}
-              onSuccess={onSuccess}
-              onError={onError}
-              cookiePolicy="single_host_origin"
-            /> */}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Button onClick={switchMode} className="text-sm mt-2">
                   {isSignUp
-                    ? "Already have an account? Sign In"
-                    : "Don't have an account? Sign Up"}
+                    ? t("auth.alreadyHaveAccount")
+                    : t("auth.dontHaveAccount")}
                 </Button>
               </Grid>
             </Grid>

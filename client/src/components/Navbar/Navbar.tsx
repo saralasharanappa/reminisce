@@ -24,8 +24,8 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  const [language, setLanguage] = useState(localStorage.getItem("language") || "en");
+  // const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  // const [language, setLanguage] = useState(localStorage.getItem("language") || "en");
   const [currentLanguage, setCurrentLanguage] = useState(localStorage.getItem("language") || "en");
 
   const { t, i18n } = useTranslation();

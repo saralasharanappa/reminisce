@@ -1,37 +1,35 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Post from "./Post/Post";
-import rootReducer from "../../reducers";
+import { RootState } from "../../reducers"; // Import RootState for type checking
+import Loader from '../Loader/Loader';
 
-type RootState = ReturnType<typeof rootReducer>;
+interface PostProps {
+  setCurrentId: (id: string) => void;
+  currentId: string;
+}
 
-const Posts = ({ setCurrentId }) => {
+const Posts: React.FC<PostProps> = ({ setCurrentId, currentId }) => {
+  // Type the state as RootState to access the posts properly
   const { posts, isLoading } = useSelector((state: RootState) => state.posts);
 
+  if (isLoading) return <Loader />;
+  
   if (!posts.length && !isLoading) {
-    return <div className="text-center text-xl mt-5">No Posts!</div>;
+    return (
+      <div className="text-center p-8 bg-white rounded-lg shadow">
+        <p className="text-xl text-gray-600">No posts found</p>
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-wrap justify-center p-1">
-      {isLoading ? (
-        <div className="w-full flex justify-center">
-          <svg
-            className="animate-spin h-10 w-10 border-4 rounded-full"
-            viewBox="0 0 24 24"
-          ></svg>
-          {/* This SVG can be replaced with any loading indicator or spinner graphic */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      {posts.map((post) => (
+        <div key={post._id} className="transform transition-all duration-200 hover:scale-[1.02]">
+          <Post post={post} setCurrentId={setCurrentId} />
         </div>
-      ) : (
-        posts.map((post) => (
-          <div
-            key={post._id}
-            className="w-full sm:w-auto md:w-1/2 lg:w-1/3 p-2"
-          >
-            <Post post={post} setCurrentId={setCurrentId} />
-          </div>
-        ))
-      )}
+      ))}
     </div>
   );
 };

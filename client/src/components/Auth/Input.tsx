@@ -6,52 +6,57 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // Define the props interface
 interface InputProps {
   name: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
   half?: boolean;
   autoFocus?: boolean;
-  type?: string;
   handleShowPassword?: () => void;
+  error?: boolean;
+  helperText?: string;
+  className?: string;
 }
 
 const Input: React.FC<InputProps> = ({
   name,
-  handleChange,
   label,
-  half = false,
-  autoFocus = false,
-  type = "text",
+  handleChange,
+  type,
+  half,
+  autoFocus,
   handleShowPassword,
-}) => (
-  <Grid item xs={12} sm={half ? 6 : 12}>
-    <TextField
-      name={name}
-      onChange={handleChange}
-      variant="outlined"
-      required
-      fullWidth
-      label={label}
-      autoFocus={autoFocus}
-      type={type}
-      InputProps={{
-        endAdornment:
-          name === "password" && handleShowPassword ? (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label={
-                  type === "password"
-                    ? "Toggle password visibility"
-                    : "Toggle password visibility off"
-                }
-                onClick={handleShowPassword}
-              >
-                {type === "password" ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          ) : null,
-      }}
-    />
-  </Grid>
-);
+  error,
+  helperText,
+  className,
+}) => {
+  return (
+    <Grid item xs={12} sm={half ? 6 : 12}>
+      <TextField
+        name={name}
+        onChange={handleChange}
+        variant="outlined"
+        required
+        fullWidth
+        label={label}
+        autoFocus={autoFocus}
+        type={type}
+        error={error}
+        helperText={helperText}
+        className={className}
+        InputProps={
+          name === "password" && {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleShowPassword}>
+                  {type === "password" ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }
+        }
+      />
+    </Grid>
+  );
+};
 
 export default Input;

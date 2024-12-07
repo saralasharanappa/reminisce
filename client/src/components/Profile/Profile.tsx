@@ -107,10 +107,10 @@ const Profile = () => {
     }
   }, [currentUser, posts]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/auth");
-  };
+  // const handleLogout = () => {
+  //   localStorage.clear();
+  //   navigate("/auth");
+  // };
 
   const compressImage = (base64: string, maxSizeKB = 100): Promise<string> => {
     return new Promise((resolve) => {

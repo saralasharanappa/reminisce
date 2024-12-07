@@ -1,61 +1,75 @@
 import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { commentPost } from "../../actions/posts";
+import { AppDispatch } from "../../types/store";
 
-const CommentSection = ({ post }) => {
+interface Post {
+  _id: string;
+  comments: string[];
+}
+
+interface User {
+  result: {
+    name: string;
+  };
+}
+
+interface CommentSectionProps {
+  post: Post;
+}
+
+const CommentSection = ({ post }: CommentSectionProps) => {
   const [comments, setComments] = useState(post?.comments || []);
   const [comment, setComment] = useState("");
-  const user = JSON.parse(localStorage.getItem("profile") || "null");
-  const dispatch = useDispatch();
-
-  // Define the type for commentsRef
-  const commentsRef = useRef<HTMLDivElement | null>(null);
+  const user = JSON.parse(localStorage.getItem("profile")) as User;
+  const dispatch = useDispatch<AppDispatch>();
+  const commentsRef = useRef<HTMLDivElement>(null);
 
   const handleComment = async () => {
-    const finalComment = `${user?.result?.name}: ${comment}`;
+    const finalComment = `${user.result.name}: ${comment}`;
     const newComments = await dispatch(commentPost(finalComment, post._id));
-    setComments(newComments);
-    setComment("");
+    if (newComments) {
+      setComments(newComments);
+      setComment("");
 
-    // Safely access commentsRef.current
-    commentsRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+      // Scroll to bottom of comments
+      if (commentsRef.current) {
+        commentsRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   return (
-    <div className="p-5">
-      <div className="mb-5">
-        <h5 className="text-lg font-bold mb-4">Comments</h5>
-        {comments.map((c, i) => (
-          <p key={i} className="mb-1">
-            <strong>{c.split(": ")[0]}</strong>
-            {c.split(":")[1]}
-          </p>
-        ))}
-        <div ref={commentsRef} />
-      </div>
-      {user?.result?.name && (
-        <div className="w-11/12 mx-auto">
-          <h6 className="text-base font-bold mb-2">Write a Comment</h6>
-          <textarea
-            className="w-full p-2 border rounded mb-2"
-            rows={4}
-            placeholder="Comment"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <button
-            className={`w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
-              !comment.length ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={!comment.length}
-            onClick={handleComment}
-          >
-            Comment
-          </button>
+    <div className="p-4">
+      <div className="flex flex-col space-y-4">
+        <h6 className="text-xl font-semibold">Comments</h6>
+        <div className="max-h-[200px] overflow-y-auto space-y-2">
+          {comments.map((c, i) => (
+            <div key={i} className="p-2 bg-gray-100 rounded">
+              {c}
+            </div>
+          ))}
+          <div ref={commentsRef} />
         </div>
-      )}
+        {user?.result?.name && (
+          <div className="space-y-2">
+            <textarea
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              rows={4}
+              placeholder="Write a comment..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+              disabled={!comment.trim()}
+              onClick={handleComment}
+            >
+              Comment
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

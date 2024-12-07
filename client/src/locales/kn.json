@@ -1,0 +1,58 @@
+{
+    "navbar": {
+      "title": "ರಿಮಿನಿಸ್",
+      "signIn": "ಲಾಗಿನ್ ಮಾಡಿ",
+      "logout": "ಲಾಗ್ ಔಟ್",
+      "searchPlaceholder": "ನೆನಪುಗಳನ್ನು ಹುಡುಕಿ",
+      "create": "ರಚಿಸಿ",
+      "profile": "ಪ್ರೊಫೈಲ್",
+      "notifications": "ಅಪಾಯಿಸಿಕೆಗಳು",
+      "search": "ಹುಡುಕಿ",
+      "lightMode": "ಲೈಟ್ ಮೋಡ್",
+      "darkMode": "ಡಾರ್ಕ್ ಮೋಡ್"
+    },
+    "auth": {
+        "signIn": "ಲಾಗಿನ್",
+        "signUp": "ನೋಂದಾಯಿಸಿ",
+        "firstName": "ಮೊದಲ ಹೆಸರು",
+        "lastName": "ಕೊನೆಯ ಹೆಸರು",
+        "email": "ಇಮೇಲ್ ವಿಳಾಸ",
+        "password": "ಗುಪ್ತಪದ",
+        "confirmPassword": "ಗುಪ್ತಪದವನ್ನು ಮರುಪ್ರಮಾಣೀಕರಿಸಿ",
+        "submitSignIn": "ಲಾಗಿನ್",
+        "submitSignUp": "ನೋಂದಾಯಿಸಿ",
+        "alreadyHaveAccount": "ಖಾತೆ ಇದೆಯೆ? ಲಾಗಿನ್ ಮಾಡಿ",
+        "dontHaveAccount": "ಖಾತೆ ಇಲ್ಲವೆ? ನೋಂದಾಯಿಸಿ"
+      },
+        "profile": {
+          "title": "ಪ್ರೊಫೈಲ್",
+          "altProfilePicture": "ಪ್ರೊಫೈಲ್ ಚಿತ್ರ",
+          "upload": "ಅಪ್‌ಲೋಡ್",
+          "bio": "ಜೀವನ ಚರಿತ್ರೆ",
+          "bioPlaceholder": "ನಿಮ್ಮ ಬಗ್ಗೆ ಏನಾದರು ಬರೆಯಿರಿ...",
+          "contact": "ಸಂಪರ್ಕ",
+          "contactPlaceholder": "ನಿಮ್ಮ ಸಂಪರ್ಕ ಮಾಹಿತಿಯನ್ನು ನಮೂದಿಸಿ...",
+          "saveChanges": "ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ",
+          "recentActivities": "ನಿಮ್ಮ ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆಗಳು",
+          "activity1": "ಪೋಸ್ಟ್ 1 ರಚಿಸಲಾಗಿದೆ",
+          "activity2": "ಪೋಸ್ಟ್ 2 ಗೆ ಲೈಕ್ ಮಾಡಲಾಗಿದೆ"
+        },
+        "postForm": {
+          "signInPrompt": "ದಯವಿಟ್ಟು ಲಾಗಿನ್ ಮಾಡಿ ನಿಮ್ಮ ಮೆಮೊರೀಸ್ ರಚಿಸಲು ಮತ್ತು ಇತರರ ಮೆಮೊರೀಸ್ ಅನ್ನು ಲೈಕ್ ಮಾಡಲು!",
+          "creating": "ಮೆಮೊರಿ ರಚನೆ",
+          "editing": "\"{{title}}\" ಸಂಪಾದಿಸುತ್ತಿದೆ",
+          "titlePlaceholder": "ಶೀರ್ಷಿಕೆ",
+          "messagePlaceholder": "ಸಂದೇಶ",
+          "tagsPlaceholder": "ಟ್ಯಾಗ್‌ಗಳು (ಅಲ್ಪವಿರಾಮದಿಂದ ಬೇರ್ಪಡಿಸಲಾಗಿದೆ)",
+          "submitButton": "ಸಲ್ಲಿಸು",
+          "clearButton": "ಅಳಿಸು"
+        },
+        "post": {
+          "readAloud": "ಓದಿ ಹೇಳಿ",
+          "downloadPDF": "PDF ಆಗಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
+          "sharePost": "ಪೋಸ್ಟ್ ಹಂಚಿಕೊಳ್ಳಿ"
+        }
+    }
+      
+  
+  
