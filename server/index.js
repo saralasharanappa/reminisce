@@ -10,7 +10,12 @@ const app = express();
 
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "*",
+    credentials: true,
+  })
+);
 app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
 app.use("/uploads", express.static("uploads"));
@@ -18,7 +23,7 @@ app.use("/uploads", express.static("uploads"));
 if (process.env.NODE_ENV !== "test") {
   const PORT = process.env.PORT || 5002;
   mongoose
-    .connect(process.env.CONNECTION_URL)
+    .connect(process.env.MONGODB_URI || process.env.CONNECTION_URL)
     .then(() =>
       app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
     )
