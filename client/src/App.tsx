@@ -1,31 +1,27 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar";
-import Home from "./components/Home/Home";
-import Auth from "./components/Auth/Auth";
-import PostDetails from "./components/PostDetails/PostDetails";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from "./components/LandingPage/LandingPage";
+import Page from "./components/LandingPage/Page";
+import Notifications from "./components/Notifications/Notifications";
+import { useTheme } from "./context/ThemeContext";
 
-const App = () => {
-  const user = JSON.parse(localStorage.getItem("profile"));
+function App() {
+  const { darkMode } = useTheme();
+
   return (
-    <BrowserRouter>
-      <div className="w-full mx-auto">
-        {" "}
-        {/* Tailwind classes for full-width and responsive padding */}
-        <Navbar />
+    <div
+      className={`${
+        darkMode ? "dark bg-gray-900" : "bg-gray-100"
+      } min-h-screen transition-colors duration-200`}
+    >
+      <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/posts" replace />} />
-          <Route path="/posts" element={<Home />} />
-          <Route path="/posts/search" element={<Home />} />
-          <Route path="/posts/:id" element={<PostDetails />} />
-          <Route
-            path="/auth"
-            element={!user ? <Auth /> : <Navigate to="/posts" replace />}
-          />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/*" element={<Page />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Routes>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </div>
   );
-};
+}
 
 export default App;
